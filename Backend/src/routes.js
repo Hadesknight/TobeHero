@@ -8,5 +8,7 @@ const OngController = require('./Controllers/OngController')
 
 routes.post('/ongs', OngController.store)
 
+routes.get('/ongs', OngController.show)
+
 
 module.exports = routes
