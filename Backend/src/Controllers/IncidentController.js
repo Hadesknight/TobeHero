@@ -26,6 +26,21 @@ module.exports = {
     const {id} = req.params
     const ong_id = req.headers.authorization
 
-    const response = (await connection('ong')).findIndex(id)
+   const incident = await connection('incidents')
+    .where('id', id)
+    .select('ong_id')
+    .first()
+
+   if(!incident){
+     return res.json({error: "Incidente não existe"})
+   }
+
+   if(incident.ong_id != ong_id){
+     return res.status(401).json({error: "Opration not permitted"})
+   }
+
+   await connection('incidents').where('id', id).delete()
+
+   return res.status(204).send()
   }
 }
