@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react';
-import {Link} from 'react-router-dom'
+import {Link, useHistory} from 'react-router-dom'
 import {FiPower, FiTrash2} from 'react-icons/fi'
 
 import api from '../../services/api'
@@ -32,6 +32,12 @@ export default function Profile() {
     }
   }
 
+  const history = useHistory()
+  function handleLogout(){
+    localStorage.clear()
+
+    history.push('/')
+  }
   return (
    <div className="profile-container">
      <header>
@@ -42,7 +48,7 @@ export default function Profile() {
         <Link className="button" to="/incidents/new">Cadastrar novo Caso</Link>
         
         
-        <button type="button">
+        <button type="button" onClick={handleLogout}>
           <FiPower size={20} color="#e02041"/>
         </button>
      </header>
