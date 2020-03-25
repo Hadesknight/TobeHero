@@ -46,5 +46,8 @@
 .new-incident-container .content form input,
 .new-incident-container .content form textarea{
   margin-top: 8px;
+  color:#000;
 }
+
+
 
