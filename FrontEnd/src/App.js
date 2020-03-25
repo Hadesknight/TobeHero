@@ -1,11 +1,13 @@
 import React from 'react';
 
+import "./global.css"
 
-import Header from './components/Header'
+import SignIn from './pages/SignIn'
+
 
 function App() {
   return (
-  <Header/>
+  <SignIn/>
   );
 }
 
