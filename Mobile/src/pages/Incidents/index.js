@@ -12,18 +12,35 @@ export default function Incidents() {
 
   const [incidents, setIncidents] = useState([])
   const [total, setTotal] = useState(0)
+  const [page, setPage] = useState(1)
+  const [loading, setLoading] = useState(false)
   const navigation = useNavigation()
 
 
+
+  async function LoadProfile(){
+    if(loading) return;
+
+    if(total > 0 &&  incidents.length === total) return;
+
+    setLoading(true)
+
+    const response = await api.get(`incidents?page=${page}`)
+
+
+    
+
+    setIncidents([...incidents, ...response.data])
+    setTotal(response.headers['x-total-count'])
+
+    setPage(page + 1)
+    setLoading(false)
+  }
+
+
+
   useEffect(()=>{
-    async function LoadProfile(){
-      const response = await api.get('incidents')
-      
-
-      setIncidents(response.data)
-      setTotal(response.headers['x-total-count'])
-    }
-
+    
     LoadProfile()
   },[])
 
@@ -47,6 +64,8 @@ export default function Incidents() {
         style={styles.incidentList}
         data={incidents}
         showsVerticalScrollIndicator={false}
+        onEndReached={LoadProfile}
+        onEndReachedThreshold={0.2}
         keyExtractor={incident => String(incident.id)}
         renderItem={({item})=>(
 

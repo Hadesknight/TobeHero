@@ -18,7 +18,7 @@ export default function Details() {
 
   
 
-  const message = "Olá APAD, Estou entrando em contato pois gostaira de ajudar no caso 'Cadelinha Atropelada' com o valor de R$120,00 "
+  const message = `Olá APAD, Estou entrando em contato pois gostaira de ajudar no caso '${incident.title}' com o valor de R$ ${incident.value},00 `
 
   function backToHome(){
     navigation.goBack()
