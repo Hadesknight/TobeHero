@@ -7,12 +7,18 @@ module.exports = {
     const ong_id = req.headers.authorization
 
 
+    try{
 
-    const [id] = await connection('incidents').insert({
-      title, description, value, ong_id
-    })
+      const [id] = await connection('incidents').insert({
+        title, description, value, ong_id
+      })
+  
+      return res.json({id})
 
-    return res.json({id})
+    }catch(err){
+      return res.status(err.status).send(err)
+    }
+   
 
   },
 

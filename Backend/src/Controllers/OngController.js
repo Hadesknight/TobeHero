@@ -21,5 +21,19 @@ module.exports = {
     const ongs = await connection('ongs').select('*')
 
     return res.json(ongs)
+  },
+
+  async delete(req, res){
+    const {id} = req.params
+
+    try{
+
+      await connection('ongs').where('id', id).delete()
+
+      return res.status(204).send()
+
+    }catch(err){
+      return res.status(err.status).send(err)
+    }
   }
 }

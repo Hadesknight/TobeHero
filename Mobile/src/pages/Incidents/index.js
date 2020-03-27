@@ -27,8 +27,8 @@ export default function Incidents() {
     LoadProfile()
   },[])
 
-  function navigateToDetail(){
-    navigation.navigate('Details')
+  function navigateToDetail(incidents){
+    navigation.navigate('Details', {incidents})
   }
 
 
@@ -60,7 +60,7 @@ export default function Incidents() {
             <Text style={styles.incidentProperty}>VALOR:</Text>
             <Text style={styles.incidentValue}>R${item.value},00</Text> 
 
-            <TouchableOpacity style={styles.detailsButton} onPress={()=>navigateToDetail(item.id)}>
+            <TouchableOpacity style={styles.detailsButton} onPress={()=>navigateToDetail(item)}>
               <Text style={styles.detailsButtonText}>Ver mais detalhes</Text>
               <Feather name="arrow-right" size={16} color="#e02041"/> 
             </TouchableOpacity>

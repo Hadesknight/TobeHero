@@ -13,6 +13,7 @@ routes.post('/session', SessionController.store)
 
 routes.post('/ongs', OngController.store)
 routes.get('/ongs', OngController.index)
+routes.delete('/ongs/:id', OngController.delete)
 
 
 routes.post('/incidents', IncidentController.store)

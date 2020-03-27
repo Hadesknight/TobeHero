@@ -1,8 +1,8 @@
 import React from 'react';
 import {Feather} from '@expo/vector-icons'
 import * as MailComposer from 'expo-mail-composer'
-import {useNavigation} from '@react-navigation/native'
-import { View , Text, Image, TouchableOpacity, Linking} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native'
+import { View , Text, FlatList, Image, TouchableOpacity, Linking} from 'react-native';
 
 
 
@@ -12,6 +12,11 @@ import styles  from './styles';
 export default function Details() {
 
   const navigation = useNavigation()
+  const route = useRoute()
+
+  const incident = route.params.incidents
+
+  
 
   const message = "Olá APAD, Estou entrando em contato pois gostaira de ajudar no caso 'Cadelinha Atropelada' com o valor de R$120,00 "
 
@@ -22,15 +27,15 @@ export default function Details() {
 
   function sendMail(){
     MailComposer.composeAsync({
-      subject: 'Herói do Caso: Cadelinha Atropelada',
-      recipients:['fernandorato.0@hotmail.com'],
+      subject: `Herói do Caso: ${incident.title}`,
+      recipients:[`${incident.email}`],
       body: message
     })
 
   }
 
   function sendWhatsapp(){
-    Linking.openURL(`whatsapp://send?phone=5533991519995&text=${message}`)
+    Linking.openURL(`whatsapp://send?phone=${incident.whatsapp}&text=${message}`)
 
   }
 
@@ -43,16 +48,72 @@ export default function Details() {
        </TouchableOpacity>
       </View>
 
-      <View style={styles.incidents}>
+    
 
-            <Text style={[styles.incidentProperty, {marginTop:0}]}>ONG:</Text>
-            <Text style={styles.incidentValue}>APAD</Text>
 
-            <Text style={styles.incidentProperty}>CASO:</Text>
-            <Text style={styles.incidentValue}>Cadelinha Atropelada</Text>
+
+    <FlatList  
+      data={[incident]}
+      keyExtractor={incident => String(incident.id)}
+      showsVerticalScrollIndicator={false}
+      renderItem={({item}) => (
+        <>
+
+          <View style={styles.incidents} >
+            <Text style={[styles.incidentProperty, {marginTop:0}]}>Caso:</Text>
+            <Text style={styles.incidentValue}>{incident.title}</Text>
+
+            <Text style={styles.incidentProperty}>Descrição:</Text>
+            <Text style={styles.incidentValue}>{incident.description}</Text>
 
             <Text style={styles.incidentProperty}>VALOR:</Text>
-            <Text style={styles.incidentValue}>R$120,00</Text> 
+            <Text style={styles.incidentValue}>R${incident.value},00</Text> 
+
+          <View style={styles.contactbox}>
+
+          </View>
+            <Text style={styles.heroTitle}>Salve o Dia</Text>
+            <Text style={styles.heroTitle}>Seja o herói desse caso.</Text>
+
+            <Text style={styles.heroDescription}>Entre em contato:</Text>
+
+            <View style={styles.actions}>
+
+              <TouchableOpacity style={styles.action} onPress={()=>sendWhatsapp()}>
+                <Text style={styles.actionText}>WhatsApp</Text>
+              </TouchableOpacity>
+              
+              <TouchableOpacity style={styles.action} onPress={()=>sendMail()}>
+                <Text style={styles.actionText}>E-mail</Text>
+              </TouchableOpacity>
+              
+            </View>
+          </View>
+        </>
+
+        
+      )}
+    
+    />
+
+
+
+
+
+
+
+
+      { /**
+      <View style={styles.incidents}>
+
+            <Text style={[styles.incidentProperty, {marginTop:0}]}>Caso:</Text>
+            <Text style={styles.incidentValue}>{incident.title}</Text>
+
+            <Text style={styles.incidentProperty}>Descrição:</Text>
+            <Text style={styles.incidentValue}>{incident.description}</Text>
+
+            <Text style={styles.incidentProperty}>VALOR:</Text>
+            <Text style={styles.incidentValue}>R${incident.value},00</Text> 
 
       </View>
 
@@ -73,7 +134,8 @@ export default function Details() {
           </TouchableOpacity>
           
         </View>
-      </View>
+      </View> */}
+
     </View>
   );
 }
