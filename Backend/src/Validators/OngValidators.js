@@ -22,8 +22,13 @@ module.exports={
   headerValidator :celebrate({
     [Segments.HEADERS]:Joi.object({
       authorization:Joi.string().required()}).unknown()
-  })
+  }),
   
+  page:celebrate({
+    [Segments.QUERY]:Joi.object().keys({
+      page: Joi.number()
+    })
+  })
  
    
   

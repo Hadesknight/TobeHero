@@ -1,6 +1,5 @@
 const express = require('express')
 
-const {celebrate, Joi, errors, Segments} = require('celebrate')
 
 const routes = express.Router()
 
@@ -14,18 +13,13 @@ const OngValidator = require('./Validators/OngValidators')
 routes.post('/session', SessionController.store)
 
 routes.post('/ongs', OngValidator.create ,OngController.store)
-
-
 routes.get('/ongs', OngController.index)
 routes.delete('/ongs/:id', OngController.delete)
 
 
 routes.post('/incidents', IncidentController.store)
-routes.get('/incidents', IncidentController.index)
-
+routes.get('/incidents', OngValidator.page, IncidentController.index)
 routes.delete('/incidents/:id', OngValidator.delete ,IncidentController.delete)
-
-
 
 routes.get('/profile', OngValidator.headerValidator, ProfileController.index)
 

@@ -18,5 +18,5 @@ app.use(errors())
 
 
 
-app.listen(3333, ()=> console.log("Rodando na porta 3333"))
+module.exports = app
 
