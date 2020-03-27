@@ -9,19 +9,11 @@ const IncidentController = require('./Controllers/IncidentController')
 const ProfileController = require('./Controllers/ProfileController')
 const SessionController = require('./Controllers/SessionController')
 
-
+const OngValidator = require('./Validators/OngValidators') 
 
 routes.post('/session', SessionController.store)
 
-routes.post('/ongs', celebrate({
-  [Segments.BODY]:Joi.object().keys({
-    name:Joi.string().required(),
-    email: Joi.string().email().required(),
-    whatsapp: Joi.string().required().min(10).max(15),
-    city: Joi.string().required(),
-    uf: Joi.string().length(2).required()
-  })
-}) ,OngController.store)
+routes.post('/ongs', OngValidator.create ,OngController.store)
 
 
 routes.get('/ongs', OngController.index)
@@ -30,8 +22,11 @@ routes.delete('/ongs/:id', OngController.delete)
 
 routes.post('/incidents', IncidentController.store)
 routes.get('/incidents', IncidentController.index)
-routes.delete('/incidents/:id', IncidentController.delete)
 
-routes.get('/profile', ProfileController.index)
+routes.delete('/incidents/:id', OngValidator.delete ,IncidentController.delete)
+
+
+
+routes.get('/profile', OngValidator.headerValidator, ProfileController.index)
 
 module.exports = routes
