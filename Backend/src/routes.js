@@ -6,6 +6,8 @@ import SessionController from './Controllers/SessionController';
 
 import OngValidator from './Validators/OngValidators';
 
+import authMiddleware from './middleware/auth';
+
 const routes = express.Router();
 
 routes.post('/session', SessionController.store);
@@ -19,5 +21,7 @@ routes.get('/incidents', OngValidator.page, IncidentController.index);
 routes.delete('/incidents/:id', OngValidator.delete, IncidentController.delete);
 
 routes.get('/profile', OngValidator.headerValidator, ProfileController.index);
+
+routes.use(authMiddleware);
 
 export default routes;

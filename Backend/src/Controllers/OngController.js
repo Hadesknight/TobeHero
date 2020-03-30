@@ -1,22 +1,32 @@
+import bcrypt from 'bcryptjs';
 import generateUniqueId from '../utils/generateUniqueId';
 import connection from '../database/connection';
 
 export default {
   async store(req, res) {
-    const { name, email, whatsapp, city, uf } = req.body;
+    const { name, email, whatsapp, city, uf, password } = req.body;
 
-    const id = generateUniqueId();
+    try {
+      const id = generateUniqueId();
 
-    await connection('ongs').insert({
-      id,
-      name,
-      email,
-      whatsapp,
-      city,
-      uf,
-    });
+      const password_hash = await bcrypt.hash(password, 8);
 
-    return res.json({ id });
+      console.log(password_hash);
+
+      await connection('ongs').insert({
+        id,
+        name,
+        email,
+        whatsapp,
+        city,
+        uf,
+        password_hash,
+      });
+
+      return res.json(id);
+    } catch (err) {
+      return res.status(400).json({ err });
+    }
   },
 
   async index(req, res) {

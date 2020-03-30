@@ -8,6 +8,7 @@ export default {
       whatsapp: Joi.string().required().min(10).max(15),
       city: Joi.string().required(),
       uf: Joi.string().length(2).required(),
+      password: Joi.string().required(),
     }),
   }),
 
