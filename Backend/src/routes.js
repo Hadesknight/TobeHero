@@ -25,6 +25,7 @@ routes.use(authMiddleware);
 // -- Rota criação de Colaboradores
 
 routes.post('/collabs', CollabValidator.create, CollabController.store);
+routes.get('/collabs', CollabController.index);
 
 //----------------------
 

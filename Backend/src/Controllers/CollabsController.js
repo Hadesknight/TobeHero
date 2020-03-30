@@ -24,7 +24,23 @@ export default {
     }
   },
 
-  async index(req, res) {},
+  async index(req, res) {
+    const { page = 1 } = req.query;
+    try {
+      const [count] = await connection('collabs').count();
+
+      const response = await connection('collabs')
+        .select('id', 'name', 'email')
+        .limit(5)
+        .offset((page - 1) * 5);
+
+      res.header('X-Total-Count', count['count(*)']);
+
+      return res.json(response);
+    } catch (err) {
+      return res.status(400).json({ err: 'error to list collabs' });
+    }
+  },
 
   async show(req, res) {},
 
