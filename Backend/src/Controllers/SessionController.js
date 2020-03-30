@@ -32,8 +32,8 @@ export default {
           email,
           whatsapp,
         },
-        token: jwt.sign({ id }, authConfig.secret, {
-          expiresIn: authConfig.expireIn,
+        token: jwt.sign({ id, name }, authConfig.secret, {
+          expiresIn: authConfig.expiresIn,
         }),
       });
     } catch (err) {

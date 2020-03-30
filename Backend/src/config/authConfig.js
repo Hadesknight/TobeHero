@@ -1,4 +1,4 @@
 export default {
-  secret: 'tobeherotopdostop',
-  expireIn: '7d',
+  secret: 'bootcampgobarbernode',
+  expiresIn: '7d',
 };

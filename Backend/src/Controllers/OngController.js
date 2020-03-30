@@ -11,8 +11,6 @@ export default {
 
       const password_hash = await bcrypt.hash(password, 8);
 
-      console.log(password_hash);
-
       await connection('ongs').insert({
         id,
         name,

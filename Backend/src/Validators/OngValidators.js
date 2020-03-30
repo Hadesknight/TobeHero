@@ -12,6 +12,13 @@ export default {
     }),
   }),
 
+  login: celebrate({
+    [Segments.BODY]: Joi.object().keys({
+      email: Joi.string().required(),
+      password: Joi.string().required(),
+    }),
+  }),
+
   delete: celebrate({
     [Segments.PARAMS]: Joi.object().keys({
       id: Joi.number().required(),

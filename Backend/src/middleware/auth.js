@@ -8,7 +8,7 @@ export default async (req, res, next) => {
     return res.status(401).json({ error: 'Token not Found' });
   }
 
-  const [, token] = authHeader.split('');
+  const [, token] = authHeader.split(' ');
 
   if (!token) {
     return res.status(401).json({ error: 'format Invalid' });
