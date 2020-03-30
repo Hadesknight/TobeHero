@@ -38,7 +38,7 @@ export default {
             whatsapp,
             admin: true,
           },
-          token: jwt.sign({ id, name }, authConfig.secret, {
+          token: jwt.sign({ id, name, admin: true }, authConfig.secret, {
             expiresIn: authConfig.expiresIn,
           }),
         });

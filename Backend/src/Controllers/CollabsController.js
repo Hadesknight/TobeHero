@@ -58,10 +58,10 @@ export default {
 
   async update(req, res) {
     const { name, email, old_password, password, password_confirm } = req.body;
-
+    const { id } = req.params;
     try {
       const collab = await connection('collabs')
-        .where('email', email)
+        .where('id', id)
         .select('*')
         .first();
 
@@ -85,11 +85,28 @@ export default {
           name,
           email,
           password_hash,
-        });
+        })
+        .select('*');
 
       return res.json(response);
     } catch (err) {
       return res.status(400).json({ err });
+    }
+  },
+
+  async delete(req, res) {
+    const { id } = req.params;
+
+    try {
+      if (!req.admin) {
+        return res.status(401).json({ err: 'User not have permission' });
+      }
+
+      await connection('collabs').where('id', id).delete();
+
+      return res.sendStatus(204);
+    } catch (err) {
+      return res.send(400).send(err);
     }
   },
 };
