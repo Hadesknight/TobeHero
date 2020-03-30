@@ -7,6 +7,7 @@ exports.up = function (knex) {
     table.string('city').notNullable();
     table.string('uf', 2).notNullable();
     table.string('password_hash').notNullable();
+    table.boolean('admin').notNullable();
   });
 };
 

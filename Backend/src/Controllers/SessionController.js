@@ -13,29 +13,61 @@ export default {
         .select('*')
         .first();
 
-      if (!ong) {
-        return res.status(401).json({ err: 'Ong Not found' });
+      const collab = await connection('collabs')
+        .where('email', email)
+        .select('*')
+        .first();
+
+      if (!ong && !collab) {
+        return res.status(401).json({ err: 'User not Found' });
       }
 
-      const checkPassword = await bcrypt.compare(password, ong.password_hash);
+      if (ong) {
+        const checkPassword = await bcrypt.compare(password, ong.password_hash);
+        if (!checkPassword) {
+          return res.status(401).json({ err: 'Incorrect Password' });
+        }
 
-      if (!checkPassword) {
-        return res.status(401).json({ err: 'Incorrect Password' });
+        const { id, name, whatsapp } = ong;
+
+        return res.json({
+          user: {
+            id,
+            name,
+            email,
+            whatsapp,
+            admin: true,
+          },
+          token: jwt.sign({ id, name }, authConfig.secret, {
+            expiresIn: authConfig.expiresIn,
+          }),
+        });
       }
 
-      const { id, name, whatsapp } = ong;
+      if (collab) {
+        const checkPassword = await bcrypt.compare(
+          password,
+          collab.password_hash
+        );
+        if (!checkPassword) {
+          return res.status(401).json({ err: 'Incorrect Password' });
+        }
 
-      return res.json({
-        user: {
-          id,
-          name,
-          email,
-          whatsapp,
-        },
-        token: jwt.sign({ id, name }, authConfig.secret, {
-          expiresIn: authConfig.expiresIn,
-        }),
-      });
+        const { id, name } = collab;
+
+        return res.json({
+          user: {
+            id,
+            name,
+            email,
+          },
+          token: jwt.sign({ id, name }, authConfig.secret, {
+            expiresIn: authConfig.expiresIn,
+          }),
+        });
+      }
+
+      return true;
     } catch (err) {
       return res.status(400).json({ err });
     }

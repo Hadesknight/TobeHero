@@ -11,6 +11,8 @@ export default {
 
       const password_hash = await bcrypt.hash(password, 8);
 
+      const admin = true;
+
       await connection('ongs').insert({
         id,
         name,
@@ -19,9 +21,10 @@ export default {
         city,
         uf,
         password_hash,
+        admin,
       });
 
-      return res.json(id);
+      return res.json({ id, name, admin });
     } catch (err) {
       return res.status(400).json({ err });
     }
