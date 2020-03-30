@@ -6,6 +6,10 @@ export default {
   async store(req, res) {
     const { name, email, password } = req.body;
 
+    if (!req.admin) {
+      return res.status(401).json({ err: 'User not have permission' });
+    }
+
     try {
       const id = generateUniqueId();
 
