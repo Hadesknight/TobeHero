@@ -42,9 +42,54 @@ export default {
     }
   },
 
-  async show(req, res) {},
+  async show(req, res) {
+    const { id } = req.params;
 
-  async update(req, res) {},
+    try {
+      const response = await connection('collabs')
+        .where('id', id)
+        .select('id', 'name', 'email');
 
-  async delete(req, res) {},
+      return res.json(response);
+    } catch (err) {
+      return res.status(400).send(err);
+    }
+  },
+
+  async update(req, res) {
+    const { name, email, old_password, password, password_confirm } = req.body;
+
+    try {
+      const collab = await connection('collabs')
+        .where('email', email)
+        .select('*')
+        .first();
+
+      let password_hash;
+
+      if (old_password) {
+        if (!(await bcrypt.compare(old_password, collab.password_hash))) {
+          return res.status(401).json({ error: 'Password Incorrect' });
+        }
+
+        if (password !== password_confirm) {
+          return res.status(401).json({ error: 'Password is not match' });
+        }
+
+        password_hash = await bcrypt.hash(password, 8);
+      }
+
+      const response = await connection('collabs')
+        .where('email', email)
+        .update({
+          name,
+          email,
+          password_hash,
+        });
+
+      return res.json(response);
+    } catch (err) {
+      return res.status(400).json({ err });
+    }
+  },
 };

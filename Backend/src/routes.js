@@ -26,6 +26,8 @@ routes.use(authMiddleware);
 
 routes.post('/collabs', CollabValidator.create, CollabController.store);
 routes.get('/collabs', CollabController.index);
+routes.get('/collabs/:id', CollabController.show);
+routes.put('/collabs/:id', CollabController.update);
 
 //----------------------
 
