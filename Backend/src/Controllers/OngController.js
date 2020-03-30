@@ -1,39 +1,39 @@
-const generateUniqueId = require('../utils/generateUniqueId')
-const connection = require('../database/connection')
+import generateUniqueId from '../utils/generateUniqueId';
+import connection from '../database/connection';
 
+export default {
+  async store(req, res) {
+    const { name, email, whatsapp, city, uf } = req.body;
 
-module.exports = {
-  async store(req, res){
+    const id = generateUniqueId();
 
-    const {name, email, whatsapp, city, uf} = req.body;
+    await connection('ongs').insert({
+      id,
+      name,
+      email,
+      whatsapp,
+      city,
+      uf,
+    });
 
-
-    const id = generateUniqueId()
-
-    const response = await  connection('ongs').insert({
-      id, name, email, whatsapp, city, uf
-    })
-
-    return res.json({id})
+    return res.json({ id });
   },
 
-  async index(req, res){
-    const ongs = await connection('ongs').select('*')
+  async index(req, res) {
+    const ongs = await connection('ongs').select('*');
 
-    return res.json(ongs)
+    return res.json(ongs);
   },
 
-  async delete(req, res){
-    const {id} = req.params
+  async delete(req, res) {
+    const { id } = req.params;
 
-    try{
+    try {
+      await connection('ongs').where('id', id).delete();
 
-      await connection('ongs').where('id', id).delete()
-
-      return res.status(204).send()
-
-    }catch(err){
-      return res.status(err.status).send(err)
+      return res.status(204).send();
+    } catch (err) {
+      return res.status(err.status).send(err);
     }
-  }
-}
+  },
+};

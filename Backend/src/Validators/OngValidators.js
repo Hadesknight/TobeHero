@@ -1,35 +1,31 @@
-const {celebrate, Segments, Joi} = require('celebrate')
+import { celebrate, Segments, Joi } from 'celebrate';
 
-
-module.exports={
-  create : celebrate({
+export default {
+  create: celebrate({
     [Segments.BODY]: Joi.object().keys({
-      name:Joi.string().required(),
+      name: Joi.string().required(),
       email: Joi.string().email().required(),
       whatsapp: Joi.string().required().min(10).max(15),
       city: Joi.string().required(),
-      uf: Joi.string().length(2).required()
-    })
+      uf: Joi.string().length(2).required(),
+    }),
   }),
-  
-  delete : celebrate({
-    [Segments.PARAMS]: Joi.object().keys({
-      id: Joi.number().required()
-    })
-  }),
-  
 
-  headerValidator :celebrate({
-    [Segments.HEADERS]:Joi.object({
-      authorization:Joi.string().required()}).unknown()
+  delete: celebrate({
+    [Segments.PARAMS]: Joi.object().keys({
+      id: Joi.number().required(),
+    }),
   }),
-  
-  page:celebrate({
-    [Segments.QUERY]:Joi.object().keys({
-      page: Joi.number()
-    })
-  })
- 
-   
-  
-}
+
+  headerValidator: celebrate({
+    [Segments.HEADERS]: Joi.object({
+      authorization: Joi.string().required(),
+    }).unknown(),
+  }),
+
+  page: celebrate({
+    [Segments.QUERY]: Joi.object().keys({
+      page: Joi.number(),
+    }),
+  }),
+};

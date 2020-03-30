@@ -1,7 +1,7 @@
-const crypto = require('crypto')
+import crypto from 'crypto';
 
-function generateUniqueId(){
-  return crypto.randomBytes(4).toString('HEX')
+function generateUniqueId() {
+  return crypto.randomBytes(4).toString('HEX');
 }
 
-module.exports = generateUniqueId
+export default generateUniqueId;
